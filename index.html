@@ -54,8 +54,7 @@ class NameForm extends React.Component {
     var movies = JSON.parse(localStorage.getItem('movies') || '{}');   
     movies.push(movie);
     localStorage.setItem('movies', JSON.stringify(movies));
-    this.setState({ todos: todos });
-    alert(movies);
+    
   }
 
   render() {
@@ -104,9 +103,13 @@ class NameForm extends React.Component {
 
 var Movie = React.createClass({
 
+
+
   handleClick: function(e) {
-     e.preventDefault();
-     console.log(e);
+    var moviesObject = JSON.parse(localStorage.getItem('movies') || '{}'); 
+    moviesObject.splice(this.props.id, 1);
+    localStorage.setItem('movies', JSON.stringify(moviesObject));
+    location.reload();
   },
 
 render: function(){
@@ -124,7 +127,7 @@ render: function(){
                   
                 <td>{this.props.rating}</td>
 
-                <td><button className="button" onClick={this.handleClick({this.props.id})} > Delete </button> </td>
+                <td><button className="button" onClick={this.handleClick} > Delete </button> </td>
               </tr>
               
 
