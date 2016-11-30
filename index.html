@@ -16,8 +16,24 @@
      <h2>Add a Movie</h2>
 
      <div id="myDiv"></div>
+      
 
-      <h2>My Movie List</h2>
+      <h2>Search</h2>
+
+        <div class="input-group add-on">
+          <input class="form-control" placeholder="Search"id="srch-term" type="text">
+          <div class="input-group-btn">
+            <button class="btn btn-default" id='searchbutton' type="button"><i class="glyphicon glyphicon-search"></i></button>
+          </div>
+        </div>
+
+      <div class="search-results">
+        <h3>search results</h3>
+        <ul id='results'>
+          
+        </ul>
+      </div>
+        <h2>My Movie List</h2>
         <div id="myDiv2"></div>
   </div>
   
@@ -172,7 +188,10 @@ return(
 
 });
 
-ReactDOM.render( <UserMovies movies={moviesJson}/>, document.getElementById( "myDiv2"));
+ReactDOM.render( 
+  <UserMovies movies={moviesJson}/>, 
+  document.getElementById( "myDiv2")
+);
 
 ReactDOM.render(
   <NameForm />,
@@ -183,17 +202,26 @@ ReactDOM.render(
 </script>
 <script type="text/javascript">
 
-
-$('.button').on('click', function(event) {
+$('#searchbutton').on('click', function(event) {
 
     event.preventDefault();
-    var movies = JSON.parse(localStorage.getItem('movies') || '{}'); 
-
-    index = event.target.id;
-    alert(index);
-//    movies.splice(index, 1);
-    
-
+    var movies = JSON.parse(localStorage.getItem('movies') || '{}');
+    var searchterm = $('#srch-term').val().toLowerCase();
+    $( "#results" ).empty();
+    $.each( movies, function( key, value ) {
+      if(value['title'].toLowerCase().indexOf(searchterm) >= 0){
+        $( "#results" ).append( "<li>" + value['title'] + "</li>" );
+      }else if(value['genre'].toLowerCase().indexOf(searchterm) >= 0){
+        $( "#results" ).append( "<li>" + value['title'] + "</li>" );
+      }else if(value['actors'].toLowerCase().indexOf(searchterm) >= 0){
+        $( "#results" ).append( "<li>" + value['title'] + "</li>" );
+      }else if(value['year'].toLowerCase().indexOf(searchterm) >= 0){
+        $( "#results" ).append( "<li>" + value['title'] + "</li>" );
+      }else if(value['rating'].toLowerCase().indexOf(searchterm) >= 0){
+        $( "#results" ).append( "<li>" + value['title'] + "</li>" );
+      }
+      
+    });
 
   });
 
