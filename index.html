@@ -18,23 +18,15 @@
      <div id="myDiv"></div>
 
       <h2>My Movie List</h2>
-        <table class="table table-hover">
-          <tr>
-            <th>Title</th>
-            <th>Genre</th>
-            <th>Actors</th>
-            <th>Year</th>
-            <th>Rating</th>
-          </tr>
-        </table>
+        <div id="myDiv2"></div>
   </div>
   
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 <script src="https://fb.me/react-15.1.0.js"></script>
 <script src="https://fb.me/react-dom-15.1.0.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.0-alpha1/JSXTransformer.js"></script>
 <script type="text/jsx">
-
+var moviesJson = JSON.parse(localStorage.getItem('movies') || '{}');
 
 class NameForm extends React.Component {
   constructor(props) {
@@ -50,16 +42,20 @@ class NameForm extends React.Component {
   }
 
   handleSubmit(event) {
-    var data = {
+    var movie = {
       title : this.refs.title.value,
       genre : this.refs.genre.value,
       actors : this.refs.actors.value,
       year : this.refs.year.value,
       rating : this.refs.rating.value
-
     }
 
-    alert(data.title);
+
+    var movies = JSON.parse(localStorage.getItem('movies') || '{}');   
+    movies.push(movie);
+    localStorage.setItem('movies', JSON.stringify(movies));
+    this.setState({ todos: todos });
+    alert(movies);
   }
 
   render() {
@@ -100,14 +96,103 @@ class NameForm extends React.Component {
 
         <input type="submit" value="Submit" />
       </form>
+
     );
   }
 }
+
+
+var Movie = React.createClass({
+
+  handleClick: function(e) {
+     e.preventDefault();
+     console.log(e);
+  },
+
+render: function(){
+
+          return(
+
+              <tr>
+                <td>{this.props.title}</td>
+
+                <td>{this.props.genre}</td>
+
+                <td>{this.props.actors}</td>
+
+                <td>{this.props.year}</td>
+                  
+                <td>{this.props.rating}</td>
+
+                <td><button className="button" onClick={this.handleClick({this.props.id})} > Delete </button> </td>
+              </tr>
+              
+
+);
+
+    }
+
+});
+
+var UserMovies = React.createClass({
+
+render: function(){
+
+var allMovies = this.props.movies.map(function(movie, index){
+
+return (
+
+<Movie title={movie.title} genre={movie.genre} actors={movie.actors} year={movie.year} rating={movie.rating} id={index} />
+
+);
+
+});
+
+return(
+
+
+<table  className="table table-hover">
+          <tr>
+            <th>Title</th>
+            <th>Genre</th>
+            <th>Actors</th>
+            <th>Year</th>
+            <th>Rating</th>
+          </tr>
+          {allMovies}
+    </table>
+
+
+);
+
+}
+
+});
+
+ReactDOM.render( <UserMovies movies={moviesJson}/>, document.getElementById( "myDiv2"));
 
 ReactDOM.render(
   <NameForm />,
   document.getElementById('myDiv')
 );
+
+
+</script>
+<script type="text/javascript">
+
+
+$('.button').on('click', function(event) {
+
+    event.preventDefault();
+    var movies = JSON.parse(localStorage.getItem('movies') || '{}'); 
+
+    index = event.target.id;
+    alert(index);
+//    movies.splice(index, 1);
+    
+
+
+  });
 
 </script>
   </body>
